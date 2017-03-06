@@ -52,20 +52,20 @@ public class Person {
 - Now init the KVO objects and assign HomeActivity as listener if you need to get notified if any change happen to anyField with KVOField annotation
 ```
 PersonKVO person = new PersonKVO();
-person.setListener(this);
+person.setListener(KVOListener);
 ```
 #### OR
 
 if you need to get notified only when a change happen to a certain field
 
 ```
-person.setListener(this, PersonKVO.FieldName.name);
+person.setListener(KVOListener, PersonKVO.FieldName.name);
 ```
 
 - Now pass this object to PayrollDetails activity through intent and change any field by calling the setter the HomeActivity will get notified with the change
 - If however we call the following line inside HomeActivity
 ```
-person.setListenerForId(this , "salary");
+person.setListenerForId(KVOListener , "salary");
 ```
 - If we declared a new object (PersonKVO or PayrollKVO) in any other class and we called setSalary or setBalance the HomeActivity will still get notified
 

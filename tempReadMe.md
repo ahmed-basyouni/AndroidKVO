@@ -16,7 +16,7 @@ fields are the same, well you can give the same id to both fields and whenever a
 a new object and you didn't assign a listener to it) you will get notified
 - no need to worry about memory leak since Lib use only `WeakReference` 
 - if your listener is `Activity` or `Fragment` before invoke callback the lib will check `isFinishing()` to make sure that they are able to receive callbacks
-- the lib support calling setter in constructor so if you have a custom constructor whenever you create an object using it you will still got notified.
+- the lib support calling setter in constructor so if you have a custom constructor whenever you create an object using it you will still get notified.
 
 #### to simplify the previous the lib give you the ability to be notified on object level or to be notified on application level
 
@@ -49,6 +49,12 @@ public class Person {
     public int age;
     @KVOField(id = "salary")
     public int salary;
+    
+    public Person(String name, int age, int salary) {
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+    }
 }
 ```
 - Build your project 

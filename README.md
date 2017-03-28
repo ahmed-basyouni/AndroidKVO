@@ -24,7 +24,8 @@ a new object and you didn't assign a listener to it) you will get notified
 
 use jCenter() to download it.   
 ```
-compile 'com.ark.android:AndroidKVO:1.3.0'
+compile 'com.ark.android:AndroidKVO:1.0.0'
+annotationProcessor 'com.ark.android:AndroidKVO-Compiler:1.0.0'
 ```
 
 - first let us consider you have a model called `Person` with variables such as `name` , `age` and salary

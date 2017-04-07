@@ -69,7 +69,6 @@ public class ClassesGenerator {
                 .append("import android.app.Activity;\n")
                 .append("import android.support.v4.app.Fragment;\n")
                 .append("import com.ark.androidkvo.annotations.KVOField;\n")
-                .append("import java.lang.reflect.Field;\n")
                 .append("import java.lang.ref.WeakReference;\n")
                 .append("import java.util.List;")
                 .append("import java.util.Iterator;\n")
@@ -141,18 +140,15 @@ public class ClassesGenerator {
                 "     * @param property\n" +
                 "     */\n");
         builder.append("   public void setListener(KVOListener listener , FieldName property){\n")
-                .append("       boolean fieldExist = false;\n" + "     Field[] fields = ")
-                .append(annotatedClass.annotatedClass.getSimpleName()).append(".class.getFields();\n")
-                .append("      String fieldId = null;\n")
-                .append("     for(Field field : fields){\n")
-                .append("         if(property.name().equals(field.getName())){\n")
-                .append("             if(field.getAnnotation(KVOField.class) == null)\n")
-                .append("                 throw new RuntimeException(\"Field \"+ field.getName() +\" must be annotated with KVOField\");\n")
-                .append("             fieldExist = true;\n")
-                .append("              fieldId = field.getAnnotation(KVOField.class).id();\n")
-                .append("             break;\n")
-                .append("         }\n")
-                .append("     }\n")
+                .append("       boolean fieldExist = false;\n" +
+                        "        String fieldId = \"\";\n" +
+                        "        for (FieldObject fieldObj : allKVOFields) {\n" +
+                        "            if(property.toString().equals(fieldObj.getFieldName())){\n" +
+                        "                fieldExist = true;\n" +
+                        "                fieldId = fieldObj.getFieldID();\n" +
+                        "                break;\n" +
+                        "            }\n" +
+                        "        }\n")
                 .append("     if(!fieldExist)\n")
                 .append("         throw new RuntimeException(\"Field with name \" + property.name() + \" does not exist or it maybe private\");\n")
                 .append("     KVOObserverObject observerObject = new KVOObserverObject();\n")
@@ -213,7 +209,17 @@ public class ClassesGenerator {
                 "     * @param id\n" +
                 "     */\n");
 
-        builder.append("    public void setListenerForId(KVOListener listener, String id) {\n" + "\n" + "        boolean fieldExist = false;\n" + "        Field[] fields = ").append(annotatedClass.annotatedClass.getSimpleName()).append(".class.getFields();\n").append("        for (Field field : fields) {\n").append("            if (field.getAnnotation(KVOField.class) == null)\n").append("                throw new RuntimeException(\"Field \" + field.getName() + \" must be annotated with KVOField\");\n").append("            else if(field.getAnnotation(KVOField.class).id().equals(id)) {\n").append("                fieldExist = true;\n").append("                break;\n").append("            }\n").append("        }\n").append("        if (!fieldExist)\n").append("            throw new RuntimeException(\"Field with id \" + id + \" does not exist or it maybe private\");\n").append("        KVOManager.getInstance().addIdentifiedObserver(id , listener);\n").append("    }\n");
+        builder.append("    public void setListenerForId(KVOListener listener, String id) {\n")
+                .append("           boolean fieldExist = false;\n" +
+                "        String fieldName = \"\";\n" +
+                "        for (FieldObject fieldObj : allKVOFields) {\n" +
+                "            if(id.equals(fieldObj.getFieldID())){\n" +
+                "                fieldExist = true;\n" +
+                "                break;\n" +
+                "            }\n" +
+                "        }\n")
+                .append("        if (!fieldExist)\n")
+                .append("            throw new RuntimeException(\"Field with id \" + id + \" does not exist or it maybe private\");\n").append("        KVOManager.getInstance().addIdentifiedObserver(id , listener);\n").append("    }\n");
 
         for (VariableElement field : annotatedClass.annotatedFields) {
 
@@ -297,7 +303,15 @@ public class ClassesGenerator {
                 "    }\n" +
                 "\n" +
                 "      private String getFieldName() {\n" +
-                "        String methodName = Thread.currentThread().getStackTrace()[4].getMethodName();\n" +
+                "        int position = 0;\n" +
+                        "          for(int x = 0; x < Thread.currentThread().getStackTrace().length ; x++){\n" +
+                        "              StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[x];\n" +
+                        "              if(stackTraceElement.getMethodName().equals(\"getFieldName\")){\n" +
+                        "                  position = x;\n" +
+                        "                  break;\n" +
+                        "              }\n" +
+                        "          }\n" +
+                        "        String methodName = Thread.currentThread().getStackTrace()[position+ 2].getMethodName();\n" +
                 "        return methodName.substring(3);\n" +
                 "    }\n"+
                 "   /**\n" +

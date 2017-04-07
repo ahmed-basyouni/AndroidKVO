@@ -30,5 +30,6 @@ import static java.lang.annotation.ElementType.TYPE;
  */
 
 @Target(value = TYPE)
+@Retention(value = RetentionPolicy.RUNTIME)
 public @interface AndroidKVO {
 }

@@ -28,6 +28,7 @@ import java.lang.annotation.Target;
  */
 
 @Target(ElementType.FIELD)
+@Retention(value = RetentionPolicy.RUNTIME)
 public @interface KVOField {
     String id() default "";
 }

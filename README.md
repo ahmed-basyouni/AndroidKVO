@@ -1,5 +1,5 @@
 # AndroidKVO
-this library is for helping android developer to implement something like iOS key value observer pattern (KVO)
+this library intend to help android developer to implement something like iOS key value observer pattern (KVO)
 
 # What is KVO?
 

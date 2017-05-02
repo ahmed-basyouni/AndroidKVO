@@ -1,6 +1,8 @@
 # AndroidKVO
 this library intend to help android developer to implement something like iOS key value observer pattern (KVO)
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-AndroidKVO-blue.svg?style=flat)](https://android-arsenal.com/details/1/5687)
+
 # What is KVO?
 
 If you came a cross KVO in iOS that feature will certainly caught your eyes, why?
